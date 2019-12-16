@@ -65,7 +65,6 @@ end
 local function one_delete(self, orig, indx) 
     local t = self.module:from(orig)
     t:delete(indx)
-    -- print(require('inspect')(t:to_seq()))
     return t:to_seq()
 end
 
