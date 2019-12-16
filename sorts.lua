@@ -6,7 +6,6 @@ Sorts.__index = Sorts
 function Sorts:_merge_proc(seq, start_indx, middle_indx, end_indx)
     local n1 = middle_indx - start_indx + 1
     local n2 = end_indx - middle_indx
-    
     local L, R = {}, {}
 
     for i = 1, n1 do 
@@ -21,13 +20,12 @@ function Sorts:_merge_proc(seq, start_indx, middle_indx, end_indx)
 
     L[n1 + 1] = 100500
     R[n2 + 1] = 100500
-    
     local i = 1
     local j = 1
 
     for c = start_indx, end_indx do 
-        left = L[i]
-        right = R[j]
+        local left = L[i]
+        local right = R[j]
 
         if left < right then
             seq[c] = left

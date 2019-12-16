@@ -1,5 +1,5 @@
-local LinkedList = {}
-LinkedList.__index = LinkedList
+local SingleLinkedList = {}
+SingleLinkedList.__index = SingleLinkedList
 
 
 local function create_node(self, prev_node, el)
@@ -45,16 +45,16 @@ local function _find(self, indx)
     return cur, prev
 end
 
-function LinkedList:new()
+function SingleLinkedList:new()
     local t = {
         first = nil,
     }
-    setmetatable(t, LinkedList)
+    setmetatable(t, SingleLinkedList)
     return t
 end
 
-function LinkedList:from(ar)
-    local l = LinkedList:new()
+function SingleLinkedList:from(ar)
+    local l = SingleLinkedList:new()
     
     for _, v in ipairs(ar) do 
         l:add(v)
@@ -63,28 +63,34 @@ function LinkedList:from(ar)
     return l
 end
 
-function LinkedList:add(el, indx)
+function SingleLinkedList:add(el, indx)
     local last_node = _find(self, indx)
     create_node(self, last_node, el)
 end
 
-function LinkedList:find(indx)
+function SingleLinkedList:find(indx)
     local node = _find(self, indx)
     return node and node.el
 end
 
-function LinkedList:delete(indx)
+function SingleLinkedList:delete(indx)
     local node, prev_node = _find(self, indx)
-    if not node or not prev_node then
+    if not node then
         return false    
     end
-    
+
     local next_node = node.next
-    prev_node.next = next_node
+    if not prev_node then
+        self.first.next = nil
+        self.first = next_node
+    else
+        prev_node.next = next_node
+    end
+    
     return true
 end
 
-function LinkedList:foreach(fun) 
+function SingleLinkedList:foreach(fun) 
     local cur = self.first     
 
     if not cur then
@@ -100,7 +106,7 @@ function LinkedList:foreach(fun)
     return cur
 end
 
-function LinkedList:reverse() 
+function SingleLinkedList:reverse() 
     local prev = nil
     local cur = self.first
     if not cur then
@@ -119,4 +125,11 @@ function LinkedList:reverse()
     self.first = cur
 end
 
-return LinkedList
+function SingleLinkedList:to_seq()
+    local tmp = {}
+    local sup = function(el) table.insert(tmp, el) end
+    self:foreach(sup)
+    return tmp
+end
+
+return SingleLinkedList
