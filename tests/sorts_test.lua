@@ -74,7 +74,6 @@ local function _test_merge(self)
     _test_merge_procedure(self, 'two', {1, 2}, {1, 2})
     _test_merge_procedure(self, 'three', {1, 2, 3}, {1, 2, 3})
     _test_merge_procedure(self, 'even array', {5, 7, 9, 11, 4, 6, 10, 12}, {4, 5, 6, 7, 9, 10, 11, 12})
-    -- TODO проверить, что если 11 вместо 2-й 5, то работает из книги
     _test_merge_procedure(self, 'odd array', {5, 7, 9, 11, 6, 10, 12}, {5, 5, 6, 7, 9, 10, 12})
 end
 
