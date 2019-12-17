@@ -4,9 +4,12 @@ local lu = require 'luaunit'
 
 local SingleLinkedList = require 'single_linked_list'
 local Sorts = require 'sorts'
+local LinkedStack = require 'stack'
+
 local LinkedListTest = require 'tests.list_test'
 local MergeTestSuit = require 'tests.merge_test'
 local SortsTestSuit = require 'tests.sorts_test'
+local StackTestSuit = require 'tests.stack_test'
 
 local function merge_wrapped() 
     return function (seq, start_indx, middle_indx, end_indx)
@@ -25,5 +28,6 @@ TestInsertSort = SortsTestSuit:create(wrap_sort('insert'))
 TestBubleSort = SortsTestSuit:create(wrap_sort('buble'))
 TestSelectionSort = SortsTestSuit:create(wrap_sort('selection'))
 TestMergeSort = SortsTestSuit:create(wrap_sort('merge'))
+TestLinkedStack = StackTestSuit:create(LinkedStack)
 
 lu.LuaUnit.run()

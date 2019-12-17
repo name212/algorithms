@@ -86,7 +86,9 @@ function SingleLinkedList:delete(indx)
     else
         prev_node.next = next_node
     end
-    
+    -- for gc
+    node.next = nil
+
     return true
 end
 
