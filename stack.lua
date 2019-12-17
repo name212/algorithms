@@ -1,3 +1,5 @@
+local Hooks = require 'stack_hook'
+
 local LinkedStack = {}
 LinkedStack.__index = LinkedStack
 
@@ -8,9 +10,10 @@ local function create_node(cur_top, el)
     }
 end
 
-function LinkedStack:new()
+function LinkedStack:new(hook)
     local t = {
-        top_el = nil
+        top_el = nil,
+        hook = hook or Hooks.NotLimitedStack:new()
     }
 
     setmetatable(t, LinkedStack)
@@ -25,8 +28,11 @@ function LinkedStack:from(ar)
     return st
 end
 
-function LinkedStack:push(el) 
+function LinkedStack:push(el)
+    local hook = self.hook 
+    hook:beforePush(self)
     self.top_el = create_node(self.top_el, el)
+    hook:afterPush(self)
 end
 
 function LinkedStack:pop() 
@@ -37,6 +43,7 @@ function LinkedStack:pop()
     self.top_el = top.next
      -- for gc
     top.next = nil
+    self.hook:afterPop(self)
     return top.el
 end
 

@@ -1,7 +1,9 @@
+local Hooks = require 'stack_hook'
 local TestUtils = require 'tests.test_utils'
 local lu = require 'luaunit'
 local equals = lu.assertEquals
 local is_nil = lu.assertNil
+local has_error = lu.assertErrorMsgContains
 
 local StackTestSuit = {}
 
@@ -63,6 +65,30 @@ function StackTestSuit:testIsEmpty()
     t1:pop()
 
     equals(t1:is_empty(), true)
+end
+
+function StackTestSuit:testLimitedStack() 
+    local module = self.module
+    local LimitedStack = Hooks.LimitedStack
+    has_error('Incorrect deep', LimitedStack.new, LimitedStack, nil)
+    has_error('Incorrect deep', LimitedStack.new, LimitedStack, {})
+    has_error('Incorrect deep', LimitedStack.new, LimitedStack, "abap")
+    has_error('Incorrect deep', LimitedStack.new, LimitedStack, 0)
+    has_error('Incorrect deep', LimitedStack.new, LimitedStack, -1)
+
+    local hook = LimitedStack:new(2)
+    local t1 = module:new(hook)
+    t1:push(1)
+    equals(hook.cur_count, 1)
+    t1:push(2)
+    equals(hook.cur_count, 2)
+    has_error('Stack overflow', t1.push, t1, 3)
+    t1:pop()
+    equals(hook.cur_count, 1)
+    t1:pop()
+    equals(hook.cur_count, 0)
+    t1:pop()
+    equals(hook.cur_count, 0)
 end
 
 return StackTestSuit
