@@ -28,6 +28,7 @@ TestInsertSort = SortsTestSuit:create(wrap_sort('insert'))
 TestBubleSort = SortsTestSuit:create(wrap_sort('buble'))
 TestSelectionSort = SortsTestSuit:create(wrap_sort('selection'))
 TestMergeSort = SortsTestSuit:create(wrap_sort('merge'))
+TestMergeSort = SortsTestSuit:create(wrap_sort('quick'))
 TestLinkedStack = StackTestSuit:create(LinkedStack)
 
 lu.LuaUnit.run()

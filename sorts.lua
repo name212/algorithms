@@ -3,6 +3,22 @@ local floor = math.floor
 local Sorts = {}
 Sorts.__index = Sorts
 
+function Sorts:_quick_sort_partition(seq, p, r) 
+    local x = seq[r]
+    local i = p - 1
+    local step = 0
+    for j = p, r - 1 do 
+        step = step + 1
+        if seq[j] <= x then
+            i = i + 1
+            seq[i], seq[j] = seq[j], seq[i]
+        end
+    end
+    i = i + 1
+    seq[i], seq[r] = seq[r], seq[i]
+    return i
+end
+
 function Sorts:_merge_proc(seq, start_indx, middle_indx, end_indx)
     local n1 = middle_indx - start_indx + 1
     local n2 = end_indx - middle_indx
@@ -106,5 +122,19 @@ function Sorts:buble(seq)
   return seq
 end
 
+function Sorts:quick(seq)
+    local this = self
+    local partition = this._quick_sort_partition
+    local function merge(s, p, r)
+        if p < r then
+            local q = partition(this, s, p, r)
+            merge(s, p, q -1)
+            merge(s, q + 1, r)
+        end
+    end
+
+    merge(seq, 1, #seq)
+    return seq
+end
 
 return Sorts
