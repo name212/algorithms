@@ -115,14 +115,12 @@ function SingleLinkedList:reverse()
         return nil
     end
     local nxt = cur and cur.next
-
     while nxt do 
         cur.next = prev
         prev = cur
         cur = nxt
         nxt = cur.next
     end
-    
     cur.next = prev
     self.first = cur
 end
